@@ -35,8 +35,7 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
 
         if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
-            XposedHelpers.findAndHookMethod(MainActivity.class, "isXposed", XC_MethodReplacement.returnConstant(true));
-            return;
+            XposedHelpers.findAndHookMethod("net.pois0nbread.gflkeeper.MainActivity", lpparam.classLoader, "isXposed", XC_MethodReplacement.returnConstant(true));
         }
 
         if (!Setting.getEnable()) return;
