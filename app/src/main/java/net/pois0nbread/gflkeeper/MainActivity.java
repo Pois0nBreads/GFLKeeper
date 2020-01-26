@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mTextView5.setVisibility(View.VISIBLE);
             new AlertDialog.Builder(this)
                     .setTitle("模块未激活或未安装Xposed框架")
-                    .setMessage("模块未激活或未安装Xposed框架" +
-                            "\n请先激活模块或安装Xposed框架后再运行软件")
+                    .setMessage("请先激活模块或安装Xposed框架后再运行软件")
                     .setNegativeButton("确认", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

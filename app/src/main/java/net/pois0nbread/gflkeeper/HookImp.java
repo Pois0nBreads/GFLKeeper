@@ -7,6 +7,7 @@ import android.os.Bundle;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -34,9 +35,8 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
 
         if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
-            XposedHelpers.findAndHookMethod(MainActivity.class, "isXposed", new XC_MethodHook() {
-                @Override protected void afterHookedMethod(MethodHookParam param) {param.setResult(true);}
-            });
+            XposedHelpers.findAndHookMethod(MainActivity.class, "isXposed", XC_MethodReplacement.returnConstant(true));
+            return;
         }
 
         if (!Setting.getEnable()) return;
