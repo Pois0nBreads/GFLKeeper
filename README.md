@@ -13,6 +13,8 @@ de.robv.android.xposed:api:82
 
 #如果可以，请赏我杯饮料喝 谢谢 https://pois0nbreads.github.io/Breads/
 
+下载地址：https://github.com/Pois0nBreads/GFLKeeper/releases/download/2.0/app-release.apk
+
 截图：
 ![image](https://github.com/Pois0nBreads/GFLKeeper/blob/MDimages/images/Screenshot_20200126-190702.jpg)
 ![image](https://github.com/Pois0nBreads/GFLKeeper/blob/MDimages/images/Screenshot_20200126-190709.jpg)
