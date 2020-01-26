@@ -12,3 +12,8 @@ de.robv.android.xposed:api:82
 
 #如果可以，请赏我杯饮料喝 谢谢 https://pois0nbreads.github.io/Breads/
 
+截图：
+![image](https://github.com/Pois0nBreads/GFLKeeper/blob/MDimages/images/Screenshot_20200126-190702.jpg)
+![image](https://github.com/Pois0nBreads/GFLKeeper/blob/MDimages/images/Screenshot_20200126-190709.jpg)
+![image](https://github.com/Pois0nBreads/GFLKeeper/blob/MDimages/images/Screenshot_20200126-190450.jpg)
+![image](https://github.com/Pois0nBreads/GFLKeeper/blob/MDimages/images/Screenshot_20200126-190619.jpg)
