@@ -16,7 +16,4 @@ de.robv.android.xposed:api:82
 下载地址：https://github.com/Pois0nBreads/GFLKeeper/releases/download/2.0/app-release.apk
 
 截图：
-![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190702.jpg)
-![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190709.jpg)
-![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190450.jpg)
-![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190619.jpg)
+![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190702.jpg)![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190709.jpg)![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190450.jpg)![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190619.jpg)
