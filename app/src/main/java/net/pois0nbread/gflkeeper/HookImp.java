@@ -10,7 +10,18 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+/**
+ * <pre>
+ *     author : Pois0nBread
+ *     e-mail : pois0nbreads@gmail.com
+ *     time   : 2020/01/26
+ *     desc   : HookImp
+ *     version: 2.0
+ * </pre>
+ */
+
 public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
+
     Activity mActivity;
     String gameList[] = {
             "com.digitalsky.girlsfrontline.cn",
@@ -18,8 +29,15 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     String activityList[] = {
             "com.digitalsky.girlsfrontline.cn.UnityPlayerActivity",
             "com.digital.unity.MainActivity"};
+
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+
+        if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
+            XposedHelpers.findAndHookMethod(MainActivity.class, "isXposed", new XC_MethodHook() {
+                @Override protected void afterHookedMethod(MethodHookParam param) {param.setResult(true);}
+            });
+        }
 
         if (!Setting.getEnable()) return;
         final int listPos = isGamePackage(lpparam.packageName);
