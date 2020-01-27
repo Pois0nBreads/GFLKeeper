@@ -29,14 +29,20 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
     //Context
     private  Activity mActivity = null;
+    //mUnityPlayer对象
+    private Object mUnityPlayer = null;
     //游戏包名列表
-    private String[] gameList = {
-            "com.digitalsky.girlsfrontline.cn",
-            "com.digitalsky.girlsfrontline.cn.bili"};
+    private String[] mGameList = {
+            "com.digitalsky.girlsfrontline.cn", //---------------------------官服
+            "com.digitalsky.girlsfrontline.cn.bili"}; //----------------------B服
     //UnityActivity列表
-    private String[] activityList = {
-            "com.digitalsky.girlsfrontline.cn.UnityPlayerActivity",
-            "com.unity3d.player.UnityPlayerActivity"};
+    private String[] mUnityPlayerActivityList = {
+            "com.digitalsky.girlsfrontline.cn.UnityPlayerActivity", //---官服
+            "com.unity3d.player.UnityPlayerActivity"}; //-----------------B服
+    //MainActivityl列表
+    private String[] mMainActivity = {
+            "com.digitalsky.girlsfrontline.cn.UnityPlayerActivity", //---官服
+            "com.digital.unity.MainActivity"}; //----------------------------B服
     //hook暂停标识符
     private  boolean wait_hook = false;
 
@@ -46,34 +52,39 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
         try {
             if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
                 XposedHelpers.findAndHookMethod("net.pois0nbread.gflkeeper.MainActivity", lpparam.classLoader, "isXposed", XC_MethodReplacement.returnConstant(true));
+                return;
             }
 
             if (!Setting.getEnable()) return;
+
             final int listPos = isGamePackage(lpparam.packageName);
             if (listPos != -1 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-
+                //Start Hook
                 XposedBridge.log("GFK : Start Hook Game Package Name is " + lpparam.packageName);
 
                 //Hook activityList[listPos]->onStart()
-                XposedHelpers.findAndHookMethod(activityList[listPos], lpparam.classLoader
+                XposedBridge.log("GFK : Start Hook " + mMainActivity[listPos] + "->onStart()");
+                XposedHelpers.findAndHookMethod(mMainActivity[listPos], lpparam.classLoader
                         , "onCreate", Bundle.class, new XC_MethodHook() {
                             @Override
-                            protected void beforeHookedMethod(final MethodHookParam param) {
+                            protected void afterHookedMethod(final MethodHookParam param) {
                                 try {
                                     mActivity = (Activity) param.thisObject;
-                                    XposedBridge.log("GFK : Hook mUnityPlayerActivity->onCreate() ：Succeed\n");
+                                    XposedBridge.log("GFK : Hook " + mMainActivity[listPos] + "->onCreate() ：Succeed");
                                 } catch (Exception e) {
-                                    XposedBridge.log("GFK : Hook mUnityPlayerActivity->onCreate() ：Error\nErrorMessage : \n" + e.getMessage() + "\n");
+                                    XposedBridge.log("GFK : Hook " + mMainActivity[listPos] + "->onCreate() ：Error\nErrorMessage : \n" + e.getMessage());
                                 }
                             }
                         });
+                XposedBridge.log("GFK : Start Hook " + mUnityPlayerActivityList[listPos] + "->onStop()");
+
                 //Hook activityList[listPos]->onStop()
-                XposedHelpers.findAndHookMethod(activityList[listPos], lpparam.classLoader
+                XposedHelpers.findAndHookMethod(mUnityPlayerActivityList[listPos], lpparam.classLoader
                         , "onStop", new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(final MethodHookParam param) {
                                 try {
-                                    Class mUnityPlayerActivity = lpparam.classLoader.loadClass(activityList[listPos]);
+                                    Class mUnityPlayerActivity = lpparam.classLoader.loadClass(mUnityPlayerActivityList[listPos]);
                                     Field mUnityPlayer = mUnityPlayerActivity.getDeclaredField("mUnityPlayer");
                                     mUnityPlayer.setAccessible(true);
                                     Class<?> cUnityPlayer = lpparam.classLoader.loadClass("com.unity3d.player.UnityPlayer");
@@ -83,63 +94,78 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                                     wait_hook = true;
                                     pause.invoke(tmUnityPlayer);
                                     //
-                                    XposedBridge.log("GFK : Hook mUnityPlayerActivity->onStop() Succeed\n");
+                                    XposedBridge.log("GFK : Hook " + mUnityPlayerActivityList[listPos] + "->onStop() Succeed");
                                 } catch (Exception e) {
                                     wait_hook = false;
-                                    XposedBridge.log("GFK : Hook mUnityPlayerActivity->onStop() Error\nErrorMessage : \n" + e.getMessage() + "\n");
+                                    XposedBridge.log("GFK : Hook " + mUnityPlayerActivityList[listPos] + "->onStop() Error\nErrorMessage : \n" + e.getMessage());
                                 }
                             }
                         });
+
                 //Hook activityList[listPos]->onRestart()
-                XposedHelpers.findAndHookMethod(activityList[listPos], lpparam.classLoader
+                XposedBridge.log("GFK : Start Hook " + mMainActivity[listPos] + "->onRestart()");
+                XposedHelpers.findAndHookMethod(mMainActivity[listPos], lpparam.classLoader
                         , "onRestart", new XC_MethodHook() {
                             @Override
-                            protected void beforeHookedMethod(final MethodHookParam param) {
+                            protected void afterHookedMethod(final MethodHookParam param) {
                                 wait_hook = false;
-                                XposedBridge.log("GFK : Hook mUnityPlayerActivity->onRestart() ：Succeed\n");
+                                XposedBridge.log("GFK : Hook " + mMainActivity[listPos] + "->onRestart() ：Succeed");
                             }
                         });
+
                 //Hook com.unity3d.player.UnityPlayer->pause()
+                XposedBridge.log("GFK : Start Hook com.unity3d.player.UnityPlayer->pause()");
                 XposedHelpers.findAndHookMethod("com.unity3d.player.UnityPlayer", lpparam.classLoader
                         , "pause", new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                if (mActivity == null || !mActivity.isInMultiWindowMode() || wait_hook) {
-                                    XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->pause() : Abort\n");
+                                if (mActivity == null) {
+                                    XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->pause() : Abort (mActivity is null)");
                                     return;
                                 }
-                                XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->pause() : Succeed\n");
+                                if (!mActivity.isInMultiWindowMode() || wait_hook) {
+                                    XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->pause() : Abort");
+                                    return;
+                                }
+                                XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->pause() : Succeed");
                                 param.setResult("none");
                             }
                         });
+
                 //Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean)
+                XposedBridge.log("GFK : Start Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean)");
                 XposedHelpers.findAndHookMethod("com.unity3d.player.UnityPlayer", lpparam.classLoader
                         , "windowFocusChanged", boolean.class, new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                if (mActivity == null || !mActivity.isInMultiWindowMode()) {
-                                    XposedBridge.log("GFK ：Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean) : Abort\n");
+                                if (mActivity == null) {
+                                    XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean) : Abort (mActivity is null)");
+                                    return;
+                                }
+                                if (!mActivity.isInMultiWindowMode()) {
+                                    XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean) : Abort");
                                     return;
                                 }
                                 if (wait_hook) {
-                                    XposedBridge.log("GFK ：Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean)->args[0] = false ：Succeed\n");
+                                    XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean)->args[0] = false ：Succeed");
                                     param.args[0] = false;
                                     return;
                                 }
-                                XposedBridge.log("GFK ：Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean)->args[0] = true ：Succeed\n");
+                                XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean)->args[0] = true ：Succeed");
                                 param.args[0] = true;
                             }
                         });
-                XposedBridge.log("GFK : " + lpparam.packageName + "is Hooked\n");
+
+                XposedBridge.log("GFK : " + lpparam.packageName + " is Hooked");
             }
         } catch (Exception e) {
-            XposedBridge.log("GFK : " + lpparam.packageName + "Hook Error\nErrorMessage : \n" + e.getMessage() + "\n");
+            XposedBridge.log("GFK : " + lpparam.packageName + "Hook Error\nErrorMessage : \n" + e.getMessage() + "");
         }
     }
 
     private int isGamePackage(String packageName) {
-        for (int i = 0; i < gameList.length; i++)
-            if (packageName.equals(gameList[i])) return i;
+        for (int i = 0; i < mGameList.length; i++)
+            if (packageName.equals(mGameList[i])) return i;
         return -1;
     }
 
