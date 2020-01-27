@@ -23,7 +23,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
-    Activity mActivity;
+    Activity mActivity = null;
     String gameList[] = {
             "com.digitalsky.girlsfrontline.cn",
             "com.digitalsky.girlsfrontline.cn.bili"};
@@ -42,13 +42,18 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
         final int listPos = isGamePackage(lpparam.packageName);
         if (listPos != -1 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 
-            XposedHelpers.findAndHookMethod(activityList[listPos], lpparam.classLoader
+            XposedHelpers.findAndHookMethod("com.digitalsky.girlsfrontline.cn.UnityPlayerActivity", lpparam.classLoader
                     , "onCreate", Bundle.class, new XC_MethodHook(){
                         @Override
-                        protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-                            mActivity = (Activity) param.thisObject;
+                        protected void afterHookedMethod(final MethodHookParam param) {
+                            try {
+                                mActivity = (Activity) param.thisObject;
+                            } catch (Exception e) {
+                            }
                         }
                     });
+
+
 
             XposedHelpers.findAndHookMethod("com.unity3d.player.UnityPlayer", lpparam.classLoader
                     , "pause", new XC_MethodHook() {
