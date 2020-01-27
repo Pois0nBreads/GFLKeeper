@@ -56,14 +56,14 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
                 //Hook activityList[listPos]->onStart()
                 XposedHelpers.findAndHookMethod(activityList[listPos], lpparam.classLoader
-                        , "onStart", Bundle.class, new XC_MethodHook() {
+                        , "onCreate", Bundle.class, new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(final MethodHookParam param) {
                                 try {
-
-                                    XposedBridge.log("GFK : Hook mUnityPlayerActivity->onStart() ：Succeed\n");
+                                    mActivity = (Activity) param.thisObject;
+                                    XposedBridge.log("GFK : Hook mUnityPlayerActivity->onCreate() ：Succeed\n");
                                 } catch (Exception e) {
-                                    XposedBridge.log("GFK : Hook mUnityPlayerActivity->onStart() ：Error\nErrorMessage : \n" + e.getMessage() + "\n");
+                                    XposedBridge.log("GFK : Hook mUnityPlayerActivity->onCreate() ：Error\nErrorMessage : \n" + e.getMessage() + "\n");
                                 }
                             }
                         });

@@ -21,7 +21,7 @@ import android.widget.Toast;
  *     e-mail : pois0nbreads@gmail.com
  *     time   : 2020/01/26
  *     desc   : MainActivity
- *     version: 2.0
+ *     version: 2.1
  * </pre>
  */
 
