@@ -80,9 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setMessage("功能启用后游戏分屏不会暂停" +
                         "\n" +
                         "\n注意事项：" +
-                        "\n本软件会使锁屏暂停失效！注意暂停！" +
-                        "\n（请先让游戏全屏再进入后台，否游戏会后台保持运行）" +
-                        "\n" +
                         "\n目前已适配版本：官服, B服" +
                         "\n(本软件不修改游戏数据 但不保证不会被封号)" +
                         "\n" +
