@@ -28,17 +28,17 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
     //Context
-    Activity mActivity = null;
+    private  Activity mActivity = null;
     //游戏包名列表
-    String gameList[] = {
+    private String[] gameList = {
             "com.digitalsky.girlsfrontline.cn",
             "com.digitalsky.girlsfrontline.cn.bili"};
     //UnityActivity列表
-    String activityList[] = {
+    private String[] activityList = {
             "com.digitalsky.girlsfrontline.cn.UnityPlayerActivity",
             "com.unity3d.player.UnityPlayerActivity"};
     //hook暂停标识符
-    boolean wait_hook = false;
+    private  boolean wait_hook = false;
 
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) {
@@ -76,7 +76,7 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                                     Class mUnityPlayerActivity = lpparam.classLoader.loadClass(activityList[listPos]);
                                     Field mUnityPlayer = mUnityPlayerActivity.getDeclaredField("mUnityPlayer");
                                     mUnityPlayer.setAccessible(true);
-                                    Class cUnityPlayer = lpparam.classLoader.loadClass("com.unity3d.player.UnityPlayer");
+                                    Class<?> cUnityPlayer = lpparam.classLoader.loadClass("com.unity3d.player.UnityPlayer");
                                     Method pause = cUnityPlayer.getDeclaredMethod("pause");
                                     Object tmUnityPlayer = mUnityPlayer.get(param.thisObject);
                                     //
