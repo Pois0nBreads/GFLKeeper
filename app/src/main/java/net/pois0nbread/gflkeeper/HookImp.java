@@ -28,7 +28,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
     //Context
-    private  Activity mActivity = null;
+    private Activity mActivity = null;
     //游戏包名列表
     private String[] mGameList = {
             "com.digitalsky.girlsfrontline.cn", //---------------------------官服
@@ -48,7 +48,8 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             "com.digital.unity.MainActivity", //----------------------------华为服
             "com.digital.unity.MainActivity"}; //---------------------------B服
     //hook暂停标识符
-    private  boolean wait_hook = false;
+    private boolean wait_hook = false;
+
     //handleLoadPackage
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) {
@@ -59,13 +60,15 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
                 return;
             }
 
-            if (!Setting.getEnable()) return;
-
             final int listPos = isGamePackage(lpparam.packageName);
             if (listPos != -1 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 //Start Hook
                 XposedBridge.log("GFK : Start Hook Game Package Name is " + lpparam.packageName);
-
+                //isEnable
+                if (!Setting.getEnable()) {
+                    XposedBridge.log("GFK : Hook Abort " + lpparam.packageName + " is not Enable");
+                    return;
+                }
                 //Hook activityList[listPos]->onStart()
                 XposedBridge.log("GFK : Start Hook " + mMainActivity[listPos] + "->onStart()");
                 XposedHelpers.findAndHookMethod(mMainActivity[listPos], lpparam.classLoader
@@ -168,8 +171,9 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     }
 
     private int isGamePackage(String packageName) {
-        for (int i = 0; i < mGameList.length; i++)
+        for (int i = 0; i < mGameList.length; i++) {
             if (packageName.equals(mGameList[i])) return i;
+        }
         return -1;
     }
 

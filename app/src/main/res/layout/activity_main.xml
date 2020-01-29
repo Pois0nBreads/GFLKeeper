@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--author : Pois0nBread
-        e-mail : pois0nbreads@gmail.com
-        time   : 2020/01/29
-        desc   : MainActivity
-        version: 2.2-->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

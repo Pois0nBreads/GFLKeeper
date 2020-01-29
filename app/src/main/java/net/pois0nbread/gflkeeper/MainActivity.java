@@ -3,7 +3,6 @@ package net.pois0nbread.gflkeeper;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,12 +37,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView mTextView5 = null;
     //
     AlertDialog alertDialog;
-    @SuppressLint("WorldWriteableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sharedPreferences = getSharedPreferences("settings", Context.MODE_WORLD_WRITEABLE);
+        sharedPreferences = getSharedPreferences("settings", Context.MODE_WORLD_READABLE);
         bindView();
         if (!isXposed()) {
             mTextView5.setVisibility(View.VISIBLE);
@@ -82,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setMessage("功能启用后游戏分屏不会暂停" +
                         "\n" +
                         "\n注意事项：" +
-                        "\n目前已适配版本：官服, B服, 华为服, 九游服 " +
+                        "\n目前已适配版本：官服, B服, 华为服, 九游服" +
                         "\n(本软件不修改游戏数据 但不保证不会被封号)" +
                         "\n" +
                         "\n祝您游戏愉快 _(:з」∠)_")
