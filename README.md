@@ -1,10 +1,10 @@
-# GFLKeeper
+# GFLKeeper v2.2 Beta
 de.robv.android.xposed:api:82
 
-<!--  作者 : Pois0nBread
+  作者 : Pois0nBread
         邮箱 : pois0nbreads@gmail.com
         更新日期 : 2020/01/29
-        版本: 2.2  -->
+        版本: 2.2  
 
 使少女前线分屏时不会暂停，大幅提升练级体验，呵护了各位指挥官的肝脏 \_(:з」∠)_
 
