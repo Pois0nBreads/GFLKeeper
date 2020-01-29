@@ -19,9 +19,9 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  * <pre>
  *     author : Pois0nBread
  *     e-mail : pois0nbreads@gmail.com
- *     time   : 2020/01/27
+ *     time   : 2020/01/29
  *     desc   : HookImp
- *     version: 2.1
+ *     version: 2.2
  * </pre>
  */
 
@@ -29,23 +29,27 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
     //Context
     private  Activity mActivity = null;
-    //mUnityPlayer对象
-    private Object mUnityPlayer = null;
     //游戏包名列表
     private String[] mGameList = {
             "com.digitalsky.girlsfrontline.cn", //---------------------------官服
+            "com.digitalsky.girlsfrontline.cn.uc", //------------------------九游服
+            "com.digitalsky.girlsfrontline.cn.huawei", //------------------华为服
             "com.digitalsky.girlsfrontline.cn.bili"}; //----------------------B服
     //UnityActivity列表
     private String[] mUnityPlayerActivityList = {
             "com.digitalsky.girlsfrontline.cn.UnityPlayerActivity", //---官服
+            "com.unity3d.player.UnityPlayerActivity", //------------------九游服
+            "com.unity3d.player.UnityPlayerActivity", //------------------华为服
             "com.unity3d.player.UnityPlayerActivity"}; //-----------------B服
     //MainActivityl列表
     private String[] mMainActivity = {
             "com.digitalsky.girlsfrontline.cn.UnityPlayerActivity", //---官服
-            "com.digital.unity.MainActivity"}; //----------------------------B服
+            "com.digital.unity.MainActivity", //----------------------------九游服
+            "com.digital.unity.MainActivity", //----------------------------华为服
+            "com.digital.unity.MainActivity"}; //---------------------------B服
     //hook暂停标识符
     private  boolean wait_hook = false;
-
+    //handleLoadPackage
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) {
 

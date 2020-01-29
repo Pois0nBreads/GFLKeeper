@@ -19,9 +19,9 @@ import android.widget.Toast;
  * <pre>
  *     author : Pois0nBread
  *     e-mail : pois0nbreads@gmail.com
- *     time   : 2020/01/26
+ *     time   : 2020/01/29
  *     desc   : MainActivity
- *     version: 2.1
+ *     version: 2.2
  * </pre>
  */
 
@@ -76,11 +76,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTextView4.setOnClickListener(this);
         //
         alertDialog = new AlertDialog.Builder(this)
-                .setTitle("使用说明（Bata）")
+                .setTitle("使用说明（Beta）")
                 .setMessage("功能启用后游戏分屏不会暂停" +
                         "\n" +
                         "\n注意事项：" +
-                        "\n目前已适配版本：官服, B服" +
+                        "\n目前已适配版本：官服, B服, 华为服" +
                         "\n(本软件不修改游戏数据 但不保证不会被封号)" +
                         "\n" +
                         "\n祝您游戏愉快 _(:з」∠)_")
