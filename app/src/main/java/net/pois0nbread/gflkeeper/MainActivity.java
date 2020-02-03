@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Pois0nBreads/GFLKeeper")));
                 break;
             case R.id.main_button4:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://pois0nbreads.github.io/Breads/")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://afdian.net/@Pois0nBread")));
                 break;
         }
     }
