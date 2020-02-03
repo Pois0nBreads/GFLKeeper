@@ -16,9 +16,11 @@ de.robv.android.xposed:api:82
 
    祝您游戏愉快 \_(:з」∠)\_
 
-#如果可以，请赏我杯饮料喝 谢谢 https://pois0nbreads.github.io/Breads/
+#如果可以，请赏我杯饮料喝 谢谢 https://afdian.net/@Pois0nBread
 
 下载地址：https://github.com/Pois0nBreads/GFLKeeper/releases/
+
+蓝奏云分流：https://www.lanzous.com/b0c23usne 密码:bqjk 如果Github下载过慢可以用这个
 
 截图：
 ![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190702.jpg)
