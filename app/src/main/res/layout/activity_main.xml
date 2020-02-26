@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/main_text1"
+        android:id="@+id/main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
@@ -17,19 +16,44 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/colorAccent" />
 
-    <Switch
-        android:id="@+id/main_switch"
+    <LinearLayout
+        android:layout_below="@id/main_text"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_text1"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginRight="5dp"
-        android:padding="14dp"
-        android:text="总开关" />
+        android:layout_height="wrap_content">
+
+        <Switch
+            android:id="@+id/main_enable_switch"
+            android:background="@drawable/button_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="5dp"
+            android:padding="14dp"
+            android:text="总开关" />
+
+        <Switch
+            android:id="@+id/main_all_mode_switch"
+            android:background="@drawable/button_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="5dp"
+            android:padding="14dp"
+            android:text="全局模式 - 在任何情况都不暂停（慎用）" />
+
+        <TextView
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_marginLeft="20dp"
+            android:text="全局模式启用后游戏将会保持后台运行（包括锁屏后）
+                                   \n战斗时仍可以手动暂停"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/main_button1"
+        android:id="@+id/main_use_info_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
@@ -37,12 +61,11 @@
         android:layout_marginTop="3dp"
         android:layout_marginRight="5dp"
         android:padding="14dp"
-        android:layout_below="@id/main_switch"
         android:textColor="@android:color/black"
         android:text="使用说明"/>
 
     <TextView
-        android:id="@+id/main_button2"
+        android:id="@+id/main_developer_info_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
@@ -50,12 +73,11 @@
         android:layout_marginTop="3dp"
         android:layout_marginRight="5dp"
         android:padding="14dp"
-        android:layout_below="@id/main_button1"
         android:textColor="@android:color/black"
         android:text="作者：酷安@Pois0nBread (求关注)"/>
 
     <TextView
-        android:id="@+id/main_button3"
+        android:id="@+id/main_github_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
@@ -63,12 +85,11 @@
         android:layout_marginTop="3dp"
         android:layout_marginRight="5dp"
         android:padding="14dp"
-        android:layout_below="@id/main_button2"
         android:textColor="@android:color/black"
-        android:text="版本 V2.3 (Beta) - 点击查看源代码"/>
+        android:text="版本 V3.1  - 点击查看源代码"/>
 
     <TextView
-        android:id="@+id/main_button4"
+        android:id="@+id/main_py_pay_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bg"
@@ -76,19 +97,18 @@
         android:layout_marginTop="3dp"
         android:layout_marginRight="5dp"
         android:padding="14dp"
-        android:layout_below="@id/main_button3"
         android:textColor="@android:color/black"
-        android:text="打赏一下秃头作者 _(:з」∠)_"/>
+        android:text="捐赠秃头作者 _(:з」∠)_"/>
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/main_textinfo"
+        android:id="@+id/main_unenable_textinfo"
+        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:padding="8dp"
         android:textSize="20dp"
         android:layout_marginTop="50dp"
-        android:layout_below="@id/main_button4"
         android:textColor="@android:color/holo_red_dark"
         android:visibility="invisible"
         android:text="模块未激活或未安装Xposed框架"/>

@@ -6,9 +6,9 @@ import de.robv.android.xposed.XSharedPreferences;
  * <pre>
  *     author : Pois0nBread
  *     e-mail : pois0nbreads@gmail.com
- *     time   : 2020/01/26
+ *     time   : 2020/02/20
  *     desc   : Setting
- *     version: 2.0
+ *     version: 3.1
  * </pre>
  */
 
@@ -24,4 +24,5 @@ public class Setting {
         return xSharedPreferences;
     }
     public static boolean getEnable() {return getSharedPreferences().getBoolean("enable", false);}
+    public static boolean getAllModeEnable() {return getSharedPreferences().getBoolean("all_mode", false);}
 }

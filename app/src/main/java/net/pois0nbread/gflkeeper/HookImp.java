@@ -19,9 +19,9 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  * <pre>
  *     author : Pois0nBread
  *     e-mail : pois0nbreads@gmail.com
- *     time   : 2020/01/29
+ *     time   : 2020/02/20
  *     desc   : HookImp
- *     version: 2.2
+ *     version: 3.1
  * </pre>
  */
 
@@ -34,19 +34,22 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             "com.digitalsky.girlsfrontline.cn", //---------------------------官服
             "com.digitalsky.girlsfrontline.cn.uc", //------------------------九游服
             "com.digitalsky.girlsfrontline.cn.huawei", //------------------华为服
-            "com.digitalsky.girlsfrontline.cn.bili"}; //----------------------B服
+            "com.digitalsky.girlsfrontline.cn.bili",  //----------------------B服
+            "com.digitalsky.girlsfrontline.cn.mi"}; //-----------------------小米服
     //UnityActivity列表
     private String[] mUnityPlayerActivityList = {
             "com.digitalsky.girlsfrontline.cn.UnityPlayerActivity", //---官服
             "com.unity3d.player.UnityPlayerActivity", //------------------九游服
             "com.unity3d.player.UnityPlayerActivity", //------------------华为服
-            "com.unity3d.player.UnityPlayerActivity"}; //-----------------B服
+            "com.unity3d.player.UnityPlayerActivity", //------------------B服
+            "com.unity3d.player.UnityPlayerActivity"}; //-----------------小米服
     //MainActivityl列表
     private String[] mMainActivity = {
             "com.digitalsky.girlsfrontline.cn.UnityPlayerActivity", //---官服
             "com.digital.unity.MainActivity", //----------------------------九游服
             "com.digital.unity.MainActivity", //----------------------------华为服
-            "com.digital.unity.MainActivity"}; //---------------------------B服
+            "com.digital.unity.MainActivity", //----------------------------B服
+            "com.digital.unity.MainActivity"}; //---------------------------小米服
     //hook暂停标识符
     private boolean wait_hook = false;
 
@@ -61,14 +64,52 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             }
 
             final int listPos = isGamePackage(lpparam.packageName);
-            if (listPos != -1 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                //Start Hook
+            if (listPos != -1) {
+                //Start Package
                 XposedBridge.log("GFK : Start Hook Game Package Name is " + lpparam.packageName);
                 //isEnable
-                if (!Setting.getEnable()) {
+                if (Setting.getEnable()) {
+                    initHook(Setting.getAllModeEnable(), listPos, lpparam);
+                } else {
                     XposedBridge.log("GFK : Hook Abort " + lpparam.packageName + " is not Enable");
-                    return;
                 }
+            }
+        } catch (Exception e) {
+            XposedBridge.log("GFK : " + lpparam.packageName + "Hook Error\nErrorMessage : \n" + e.getMessage() + "");
+        }
+    }
+
+    //initHook
+    private void initHook(boolean AllMode, int listPos, XC_LoadPackage.LoadPackageParam lpparam){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //Start Hook
+            XposedBridge.log("GFK : Start Hook AllMode is " + AllMode);
+            if (AllMode) {
+                //All Mode
+                //Hook com.unity3d.player.UnityPlayer->pause()
+                XposedBridge.log("GFK : Start Hook com.unity3d.player.UnityPlayer->pause()");
+                XposedHelpers.findAndHookMethod("com.unity3d.player.UnityPlayer", lpparam.classLoader
+                        , "pause", new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->pause() : Succeed");
+                                param.setResult("none");
+                            }
+                        });
+
+                //Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean)
+                XposedBridge.log("GFK : Start Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean)");
+                XposedHelpers.findAndHookMethod("com.unity3d.player.UnityPlayer", lpparam.classLoader
+                        , "windowFocusChanged", boolean.class, new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                XposedBridge.log("GFK : Hook com.unity3d.player.UnityPlayer->windowFocusChanged(boolean)->args[0] = true ：Succeed");
+                                param.args[0] = true;
+                            }
+                        });
+                XposedBridge.log("GFK : " + lpparam.packageName + " is Hooked");
+            } else {
+                //No All Mode
                 //Hook activityList[listPos]->onStart()
                 XposedBridge.log("GFK : Start Hook " + mMainActivity[listPos] + "->onStart()");
                 XposedHelpers.findAndHookMethod(mMainActivity[listPos], lpparam.classLoader
@@ -165,8 +206,9 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
                 XposedBridge.log("GFK : " + lpparam.packageName + " is Hooked");
             }
-        } catch (Exception e) {
-            XposedBridge.log("GFK : " + lpparam.packageName + "Hook Error\nErrorMessage : \n" + e.getMessage() + "");
+        } else {
+            //Hook Abort (LowAPI)
+            XposedBridge.log("GFK : Hook Abort Low Api");
         }
     }
 
@@ -178,6 +220,5 @@ public class HookImp implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     }
 
     @Override
-    public void initZygote(StartupParam startupParam) {
-    }
+    public void initZygote(StartupParam startupParam) {}
 }
