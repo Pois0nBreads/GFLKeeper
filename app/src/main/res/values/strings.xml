@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">GFL Keeper (V3.3)</string>
+    <string name="app_name">GFL Keeper</string>
+    <string name="label_name">GFL Keeper (V4.0)</string>
+    <string name="dialog_layout_button1_text">支付宝</string>
+    <string name="dialog_layout_button2_text">Paypal</string>
+    <string name="dialog_layout_button3_text">其他/微信</string>
+    <string name="activity_main_main_text_text">设置</string>
+    <string name="gnu">本程序遵守GNU协议，请勿用于商业用途</string>
+    <string name="activity_main_enable_switch">总开关</string>
+    <string name="activity_main_user_info_button_text">使用说明</string>
+    <string name="activity_main_developer_info_button_text">作者：酷安@Pois0nBread (求关注)</string>
+    <string name="activity_main_github_button_text">版本 V4.0 - 点击查看源代码</string>
+    <string name="activity_main_py_pay_button_text">捐赠秃头作者 _(:з」∠)_</string>
+    <string name="activity_main_qq_group_button_text">点击加群 交流/反馈Bugs (群号：1062440816)</string>
 </resources>

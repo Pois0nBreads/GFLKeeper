@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+      author : Pois0nBread
+      e-mail : pois0nbreads@gmail.com
+      time   : 2020/05/21
+      desc   : activity_main.xml
+      version: 4.0
+ -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,7 +19,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
-        android:text="设置"
+        android:text="@string/activity_main_main_text_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/colorAccent" />
 
@@ -28,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:padding="10dp"
-            android:text="本程序遵守GNU协议，请勿用于商业用途"
+            android:text="@string/gnu"
             android:textColor="@android:color/black" />
     </RelativeLayout>
 
@@ -52,26 +59,13 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/button_bg"
                 android:padding="14dp"
-                android:text="总开关" />
-
-            <Switch
-                android:id="@+id/main_all_mode_switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/button_bg"
-                android:padding="14dp"
-                android:text="全局模式 - 在任何情况都不暂停（慎用）" />
+                android:text="@string/activity_main_enable_switch" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="全局模式启用后游戏将会保持后台运行（包括锁屏后）
-                                   \n战斗时仍可以手动暂停"
-                android:textColor="@android:color/holo_red_dark" />
+                android:layout_marginStart="20dp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/main_use_info_button"
@@ -82,7 +76,7 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/button_bg"
                 android:padding="14dp"
-                android:text="使用说明"
+                android:text="@string/activity_main_user_info_button_text"
                 android:textColor="@android:color/black" />
 
             <TextView
@@ -94,7 +88,7 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/button_bg"
                 android:padding="14dp"
-                android:text="作者：酷安@Pois0nBread (求关注)"
+                android:text="@string/activity_main_developer_info_button_text"
                 android:textColor="@android:color/black" />
 
             <TextView
@@ -106,7 +100,7 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/button_bg"
                 android:padding="14dp"
-                android:text="版本 V3.3  - 点击查看源代码"
+                android:text="@string/activity_main_github_button_text"
                 android:textColor="@android:color/black" />
 
             <TextView
@@ -118,11 +112,11 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/button_bg"
                 android:padding="14dp"
-                android:text="捐赠秃头作者 _(:з」∠)_"
+                android:text="@string/activity_main_py_pay_button_text"
                 android:textColor="@android:color/black" />
 
-            <Switch
-                android:id="@+id/main_bili_mode_switch"
+            <TextView
+                android:id="@+id/main_qq_group_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -130,21 +124,9 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/button_bg"
                 android:padding="14dp"
-                android:text="B站反防沉迷登录（Beta）" />
+                android:text="@string/activity_main_qq_group_button_text"
+                android:textColor="@android:color/black" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="在登录时点击标题上蓝色的 '登录' 文字即可
-                                   \n(注意：在开启功能前需要至少一次正常登录)"
-                android:textColor="@android:color/holo_red_dark" />
-
-            <ImageView
-                android:layout_marginLeft="20dp"
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:background="@drawable/simple"/>
         </LinearLayout>
     </ScrollView>
 

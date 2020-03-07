@@ -18,9 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
  * <pre>
  *     author : Pois0nBread
  *     e-mail : pois0nbreads@gmail.com
- *     time   : 2020/03/07
- *     desc   : MainActivity
- *     version: 3.3
+ *     time   : 2020/05/21
+ *     desc   : MainActivity.java
+ *     version: 4.0
  * </pre>
  */
 
@@ -28,30 +28,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private SharedPreferences sharedPreferences = null;
 
-    Switch mEnableSwitch = null;
-    Switch mAllModeSwitch = null;
-    Switch mBiliModeSwitch = null;
+    private Switch mEnableSwitch = null;
     //
-    AlertDialog mUse_Info_AlertDialog;
-    AlertDialog mPy_Pay_alertDialog;
+    private AlertDialog mUse_Info_AlertDialog;
+    private AlertDialog mPy_Pay_alertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sharedPreferences = getSharedPreferences("settings", Context.MODE_WORLD_READABLE);
+        sharedPreferences = getSharedPreferences(Constall.Settings, Context.MODE_PRIVATE);
         bindView();
         if (!isXposed()) {
             new AlertDialog.Builder(this)
                     .setTitle("模块未激活或未安装Xposed框架")
                     .setMessage("请先激活模块或安装Xposed框架后再运行软件")
                     .setNegativeButton("确认", (dialog, which) -> {
-                        sharedPreferences.edit().putBoolean("dialog", false).commit();
+                        sharedPreferences.edit().putBoolean("dialog", false).apply();
                         dialog.dismiss();
                     }).create().show();
             return;
         }
-        if (sharedPreferences.getBoolean("dialog", true)) mUse_Info_AlertDialog.show();
-        if (sharedPreferences.getBoolean("first_open", true)) {
+        if (sharedPreferences.getBoolean(Constall.Dialog, true)) mUse_Info_AlertDialog.show();
+        if (sharedPreferences.getBoolean(Constall.FirstOpen, true)) {
             new AlertDialog.Builder(this)
                     .setTitle("来自作者的留言 ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄")
                     .setMessage("制作这个软件花费我不少时间，如果你喜欢这个项目，可以赞助我买瓶可乐\n⊙▽⊙")
@@ -59,27 +58,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .setPositiveButton("下次再说", (dialog, which) -> dialog.dismiss())
                     .create()
                     .show();
-            sharedPreferences.edit().putBoolean("first_open", false).apply();
+            sharedPreferences.edit().putBoolean(Constall.FirstOpen, false).apply();
         }
     }
 
     private void bindView() {
         //
         mEnableSwitch = findViewById(R.id.main_enable_switch);
-        mAllModeSwitch = findViewById(R.id.main_all_mode_switch);
-        mBiliModeSwitch = findViewById(R.id.main_bili_mode_switch);
-        mEnableSwitch.setChecked(sharedPreferences.getBoolean("enable", false));
-        mAllModeSwitch.setChecked(sharedPreferences.getBoolean("all_mode", false));
-        mBiliModeSwitch.setChecked(sharedPreferences.getBoolean("bili_mode", false));
+        mEnableSwitch.setChecked(sharedPreferences.getBoolean(Constall.Enable,false));
         //
         mEnableSwitch.setOnCheckedChangeListener(this);
-        mAllModeSwitch.setOnCheckedChangeListener(this);
-        mBiliModeSwitch.setOnCheckedChangeListener(this);
         //
         findViewById(R.id.main_github_button).setOnClickListener(this);
         findViewById(R.id.main_use_info_button).setOnClickListener(this);
         findViewById(R.id.main_py_pay_button).setOnClickListener(this);
         findViewById(R.id.main_developer_info_button).setOnClickListener(this);
+        findViewById(R.id.main_qq_group_button).setOnClickListener(this);
         //
         mUse_Info_AlertDialog = new AlertDialog.Builder(this)
                 .setTitle("使用说明")
@@ -89,11 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "\n目前已适配版本：官服, B服, 华为服, 九游服, 小米服" +
                         "\n(本软件不修改游戏数据 但不保证不会被封号)" +
                         "\n" +
-                        "\n3.3新增：B服反防沉迷（不保证不会被封号）" +
-                        "\n" +
                         "\n祝您游戏愉快 _(:з」∠)_")
                 .setNegativeButton("我晓得了,别烦我", (dialog, which) -> {
-                    sharedPreferences.edit().putBoolean("dialog", false).apply();
+                    sharedPreferences.edit().putBoolean(Constall.Dialog, false).apply();
                     dialog.dismiss();
                 }).create();
         //
@@ -119,6 +111,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_py_pay_button:
                 mPy_Pay_alertDialog.show();
                 return;
+            case R.id.main_qq_group_button:
+                joinQQGroup("9UitjO-Id4O5Sj-wfbR3icMb76XcAQ57");
+                return;
         }
         switch (v.getId()) {
             case R.id.dialog_button1:
@@ -127,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "%3Dweb-other&_t=1472443966571#Intent;" +
                         "scheme=alipayqr;package=com.eg.android.AlipayGphone;end";
                 try {
-                    getPackageManager().getApplicationInfo("com.eg.android.AlipayGphone", PackageManager.GET_UNINSTALLED_PACKAGES);
+                    getPackageManager().getApplicationInfo("com.eg.android.AlipayGphone", 0);
                     Intent intent = Intent.parseUri(intentFullUrl, Intent.URI_INTENT_SCHEME);
                     startActivity(intent);
                 } catch (Exception e) {
@@ -146,19 +141,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-            case R.id.main_enable_switch:
-                sharedPreferences.edit().putBoolean("enable", isChecked).commit();
-                Toast.makeText(this, "重启游戏后生效", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.main_all_mode_switch:
-                sharedPreferences.edit().putBoolean("all_mode", isChecked).commit();
-                Toast.makeText(this, "重启游戏后生效", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.main_bili_mode_switch:
-                sharedPreferences.edit().putBoolean("bili_mode", isChecked).commit();
-                Toast.makeText(this, "重启游戏后生效", Toast.LENGTH_SHORT).show();
-                break;
+        sharedPreferences.edit().putBoolean(Constall.Enable, isChecked).apply();
+        Toast.makeText(this, "重启游戏后生效", Toast.LENGTH_SHORT).show();
+    }
+
+    public void joinQQGroup(String key) {
+        Intent intent = new Intent();
+        intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + key));
+        // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "未安装手Q或安装的版本不支持", Toast.LENGTH_SHORT).show();
         }
     }
 
