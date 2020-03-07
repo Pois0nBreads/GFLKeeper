@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "\n目前已适配版本：官服, B服, 华为服, 九游服, 小米服" +
                         "\n(本软件不修改游戏数据 但不保证不会被封号)" +
                         "\n" +
-                        "\n3.2新增：B服反防沉迷（不保证不会被封号）" +
+                        "\n3.3新增：B服反防沉迷（不保证不会被封号）" +
                         "\n" +
                         "\n祝您游戏愉快 _(:з」∠)_")
                 .setNegativeButton("我晓得了,别烦我", (dialog, which) -> {
