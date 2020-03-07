@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -19,9 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
  * <pre>
  *     author : Pois0nBread
  *     e-mail : pois0nbreads@gmail.com
- *     time   : 2020/02/20
+ *     time   : 2020/03/07
  *     desc   : MainActivity
- *     version: 3.1
+ *     version: 3.3
  * </pre>
  */
 
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Switch mEnableSwitch = null;
     Switch mAllModeSwitch = null;
-    TextView mUnEnableInfo = null;
+    Switch mBiliModeSwitch = null;
     //
     AlertDialog mUse_Info_AlertDialog;
     AlertDialog mPy_Pay_alertDialog;
@@ -42,12 +41,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sharedPreferences = getSharedPreferences("settings", Context.MODE_WORLD_READABLE);
         bindView();
         if (!isXposed()) {
-            mUnEnableInfo.setVisibility(View.VISIBLE);
             new AlertDialog.Builder(this)
                     .setTitle("模块未激活或未安装Xposed框架")
                     .setMessage("请先激活模块或安装Xposed框架后再运行软件")
                     .setNegativeButton("确认", (dialog, which) -> {
-                        sharedPreferences.edit().putBoolean("dialog", false).apply();
+                        sharedPreferences.edit().putBoolean("dialog", false).commit();
                         dialog.dismiss();
                     }).create().show();
             return;
@@ -69,13 +67,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //
         mEnableSwitch = findViewById(R.id.main_enable_switch);
         mAllModeSwitch = findViewById(R.id.main_all_mode_switch);
+        mBiliModeSwitch = findViewById(R.id.main_bili_mode_switch);
         mEnableSwitch.setChecked(sharedPreferences.getBoolean("enable", false));
         mAllModeSwitch.setChecked(sharedPreferences.getBoolean("all_mode", false));
-        //
-        mUnEnableInfo = findViewById(R.id.main_unenable_textinfo);
+        mBiliModeSwitch.setChecked(sharedPreferences.getBoolean("bili_mode", false));
         //
         mEnableSwitch.setOnCheckedChangeListener(this);
         mAllModeSwitch.setOnCheckedChangeListener(this);
+        mBiliModeSwitch.setOnCheckedChangeListener(this);
         //
         findViewById(R.id.main_github_button).setOnClickListener(this);
         findViewById(R.id.main_use_info_button).setOnClickListener(this);
@@ -89,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "\n注意事项：" +
                         "\n目前已适配版本：官服, B服, 华为服, 九游服, 小米服" +
                         "\n(本软件不修改游戏数据 但不保证不会被封号)" +
+                        "\n" +
+                        "\n3.2新增：B服反防沉迷（不保证不会被封号）" +
                         "\n" +
                         "\n祝您游戏愉快 _(:з」∠)_")
                 .setNegativeButton("我晓得了,别烦我", (dialog, which) -> {
@@ -147,11 +148,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
             case R.id.main_enable_switch:
-                sharedPreferences.edit().putBoolean("enable", isChecked).apply();
+                sharedPreferences.edit().putBoolean("enable", isChecked).commit();
                 Toast.makeText(this, "重启游戏后生效", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.main_all_mode_switch:
-                sharedPreferences.edit().putBoolean("all_mode", isChecked).apply();
+                sharedPreferences.edit().putBoolean("all_mode", isChecked).commit();
+                Toast.makeText(this, "重启游戏后生效", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.main_bili_mode_switch:
+                sharedPreferences.edit().putBoolean("bili_mode", isChecked).commit();
                 Toast.makeText(this, "重启游戏后生效", Toast.LENGTH_SHORT).show();
                 break;
         }
