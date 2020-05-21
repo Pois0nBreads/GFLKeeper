@@ -39,7 +39,6 @@ public class Setting implements SharedPreferences{
             String name = cursor.getString(cursor.getColumnIndex("name"));
             String value = cursor.getString(cursor.getColumnIndex("value"));
             String type = cursor.getString(cursor.getColumnIndex("type"));
-            cursor.close();
             switch (type) {
                 case "boolean":
                     map.put(name, Boolean.valueOf(value));
@@ -58,6 +57,7 @@ public class Setting implements SharedPreferences{
                     break;
             }
         }
+        cursor.close();
         return map;
     }
 
