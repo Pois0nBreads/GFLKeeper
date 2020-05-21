@@ -22,7 +22,7 @@ de.robv.android.xposed:api:82
 
 下载地址：https://github.com/Pois0nBreads/GFLKeeper/releases/
 
-蓝奏云分流：https://www.lanzous.com/b0c23usne 密码:bqjk 如果Github下载过慢可以用这个
+蓝奏云分流：https://pois0nbread.lanzous.com/b0c23usne 如果Github下载过慢可以用这个
 
 截图：
 ![image](https://github.com/Pois0nBreads/GFLKeeper/blob/master/images/Screenshot_20200126-190450.jpg)
